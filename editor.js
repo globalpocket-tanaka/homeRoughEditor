@@ -741,11 +741,11 @@ var editor = {
         qSVG.create('boxRoom', 'path', {
               d: pathCreate,
               fill: 'url(#'+ROOM[rr].color+')',
-              'fill-opacity': 1, stroke: 'none', 'fill-rule': 'evenodd', class: 'room'});
+              'fill-opacity': 0.3, stroke: 'none', 'fill-rule': 'evenodd', class: 'room'});
 
         qSVG.create('boxSurface', 'path', {
               d: pathCreate,
-              fill: '#fff', 'fill-opacity': 1, stroke: 'none', 'fill-rule': 'evenodd', class: 'room'});
+              fill: '#fff', 'fill-opacity': 0.3, stroke: 'none', 'fill-rule': 'evenodd', class: 'room'});
 
         var centroid = qSVG.polygonVisualCenter(ROOM[rr]);
 
@@ -767,10 +767,27 @@ var editor = {
     }
     if (globalArea <= 0) {
       globalArea = 0;
-      $('#areaValue').html('');
+      // $('#areaValue').html('');
+      $('#reportTotalSurface').html('');
+      $('#reportRooms').html('');
     }
     else {
-      $('#areaValue').html('<i class="fa fa-map-o" aria-hidden="true"></i> '+(globalArea/3600).toFixed(1)+ ' m²');
+      // $('#areaValue').html('総面積：'+(globalArea/3600).toFixed(2)+ ' m²');
+      document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b>"+(globalArea/3600).toFixed(2)+ "</b> m²";
+      $('#reportTotalSurface').show(1000);
+      var number = 1;
+      var reportRoom = '<div class="row">\n';
+      for (var k in ROOM) {
+        var nameRoom = number;
+        if (ROOM[k].name != "") nameRoom = ROOM[k].name;
+        reportRoom+= '<div class="col-md-3"><p>'+nameRoom+'</p></div>\n';
+        reportRoom+= '<div class="col-md-9"><p><b style="margin::5px">'+((ROOM[k].area)/3600).toFixed(2)+'</b>m²</p></div>\n';
+        number++;
+      }
+      reportRoom+='</div>';
+
+      document.getElementById('reportRooms').innerHTML = reportRoom;
+      $('#reportRooms').show(1000);
     }
   },
 

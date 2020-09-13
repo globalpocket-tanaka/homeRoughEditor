@@ -1598,7 +1598,7 @@ event.preventDefault();
                 }
 
               if (found) {
-                $('#panel').hide(100);
+                // $('#panel').hide(100);
                 var objWall = editor.objFromWall(wallBind);
                 $('#boxinfo').html('Modify a wall<br/><span style="font-size:0.7em;color:#de9b43">This wall can\'t become a separation (contains doors or windows) !</span>');
                 if (objWall.length > 0) $('#separate').hide();
@@ -1617,7 +1617,7 @@ event.preventDefault();
                   document.getElementById('titleWallTools').textContent = "Modify the wall";
                   $('#boxinfo').html('Modify the wall');
                 }
-                $('#wallTools').show(200);
+                // $('#wallTools').show(200);
                 document.getElementById('wallWidth').setAttribute('min', 7);
                 document.getElementById('wallWidth').setAttribute('max', 50);
                 document.getElementById('wallWidthScale').textContent = "7-50";

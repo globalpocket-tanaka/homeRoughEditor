@@ -3,7 +3,7 @@ WALLS = [];
 OBJDATA = [];
 ROOM = [];
 HISTORY = [];
-wallSize = 20;
+wallSize = 10;
 partitionSize = 8;
 var drag = 'off';
 var action = 0;
@@ -23,7 +23,7 @@ grid_snap = 'off';
 colorbackground = "#ffffff";
 colorline = "#fff";
 colorroom = "#f0daaf";
-colorWall = "#666";
+colorWall = "#6ff";
 pox = 0;
 poy = 0;
 segment = 0;
@@ -163,165 +163,167 @@ document.getElementById('report_mode').addEventListener("click", function() {
   mode = "report_mode";
   $('#panel').hide();
   $('#reportTools').show(200, function() {
-    document.getElementById('reportTotalSurface').innerHTML = "Total de la surface : <b>"+(globalArea/3600).toFixed(1)+ "</b> m²";
+    document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b>"+(globalArea/3600).toFixed(2)+ "</b> m²";
     $('#reportTotalSurface').show(1000);
-    document.getElementById('reportNumberSurface').innerHTML = "Nombre pièces : <b>"+ROOM.length+ "</b>";
+    document.getElementById('reportNumberSurface').innerHTML = "面の数 : <b>"+ROOM.length+ "</b>";
     $('#reportNumberSurface').show(1000);
     var number = 1;
     var reportRoom = '<div class="row">\n';
     for (var k in ROOM) {
-      var nameRoom = "Pièce n°"+number+" <small>(sans nom)</small>";
+      var nameRoom = number+"つ目の面";
       if (ROOM[k].name != "") nameRoom = ROOM[k].name;
       reportRoom+= '<div class="col-md-6"><p>'+nameRoom+'</p></div>\n';
-      reportRoom+= '<div class="col-md-6"><p>Surface : <b>'+((ROOM[k].area)/3600).toFixed(2)+'</b> m²</p></div>\n';
+      reportRoom+= '<div class="col-md-6"><p>面積 : <b>'+((ROOM[k].area)/3600).toFixed(2)+'</b> m²</p></div>\n';
       number++;
     }
-    reportRoom+='</div><hr/>\n';
-    reportRoom+='<div>\n';
-    var switchNumber = 0;
-    var plugNumber = 0;
-    var lampNumber = 0;
-    for (var k in OBJDATA) {
-      if (OBJDATA[k].class == 'energy') {
-        if (OBJDATA[k].type == 'switch' || OBJDATA[k].type == 'doubleSwitch' || OBJDATA[k].type == 'dimmer') switchNumber++;
-        if (OBJDATA[k].type == 'plug' || OBJDATA[k].type == 'plug20' || OBJDATA[k].type == 'plug32') plugNumber++;
-        if (OBJDATA[k].type == 'wallLight' || OBJDATA[k].type == 'roofLight') lampNumber++;
-      }
-    }
-    reportRoom+='<p>Nombre d\'interrupteur(s) : '+switchNumber+'</p>';
-    reportRoom+='<p>Nombre de prise(s) secteur : '+plugNumber+'</p>';
-    reportRoom+='<p>Nombre de point(s) de lumière : '+lampNumber+'</p>';
-    reportRoom+='</div>';
-    reportRoom+='<div>\n';
-    reportRoom+='<h2>Répartition énergie par pièce</h2>\n';
-    var number = 1;
-    reportRoom+= '<div class="row">\n';
-    reportRoom+= '<div class="col-md-4"><p>Libellé</p></div>\n';
-    reportRoom+= '<div class="col-md-2"><small>Int.</small></div>\n';
-    reportRoom+= '<div class="col-md-2"><small>Pri. sec.</small></div>\n';
-    reportRoom+= '<div class="col-md-2"><small>Pt lum.</small></div>\n';
-    reportRoom+= '<div class="col-md-2"><small>Watts Max</small></div>\n';
     reportRoom+='</div>';
 
-    var roomEnergy = [];
-    for (var k in ROOM) {
-      reportRoom+= '<div class="row">\n';
-      var nameRoom = "Pièce n°"+number+" <small>(sans nom)</small>";
-      if (ROOM[k].name != "") nameRoom = ROOM[k].name;
-      reportRoom+= '<div class="col-md-4"><p>'+nameRoom+'</p></div>\n';
-      var switchNumber = 0;
-      var plugNumber = 0;
-      var plug20 = 0;
-      var plug32 = 0;
-      var lampNumber = 0;
-      var wattMax = 0;
-      var plug = false;
-      for (var i in OBJDATA) {
-        if (OBJDATA[i].class == 'energy') {
-          if (OBJDATA[i].type == 'switch' || OBJDATA[i].type == 'doubleSwitch' || OBJDATA[i].type == 'dimmer') {
-            if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
-              if (isObjectsEquals(ROOM[k], roomTarget)) switchNumber++;
-            }
-          }
-          if (OBJDATA[i].type == 'plug' || OBJDATA[i].type == 'plug20' || OBJDATA[i].type == 'plug32') {
-            if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
-              if (isObjectsEquals(ROOM[k], roomTarget)) {
-                plugNumber++;
-                if (OBJDATA[i].type == 'plug' && !plug) {wattMax+=3520;plug = true;}
-                if (OBJDATA[i].type == 'plug20') {wattMax+=4400;plug20++;}
-                if (OBJDATA[i].type == 'plug32') {wattMax+=7040;plug32++;}
-              }
-            }
-          }
-          if (OBJDATA[i].type == 'wallLight' || OBJDATA[i].type == 'roofLight') {
-            if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
-              if (isObjectsEquals(ROOM[k], roomTarget)) {
-              lampNumber++;
-               wattMax+=100;
-              }
-            }
-          }
-        }
-      }
-      roomEnergy.push({switch: switchNumber, plug: plugNumber, plug20: plug20, plug32: plug32, light: lampNumber});
-      reportRoom+= '<div class="col-md-2"><b>'+switchNumber+'</b></div>\n';
-      reportRoom+= '<div class="col-md-2"><b>'+plugNumber+'</b></div>\n';
-      reportRoom+= '<div class="col-md-2"><b>'+lampNumber+'</b></div>\n';
-      reportRoom+= '<div class="col-md-2"><b>'+wattMax+'</b></div>\n';
-      number++;
-      reportRoom+='</div>';
-    }
-    reportRoom+='<hr/><h2>Détails Norme NF C 15-100</h2>\n';
-    var number = 1;
+    // reportRoom+='<hr/>\n';
+    // reportRoom+='<div>\n';
+    // var switchNumber = 0;
+    // var plugNumber = 0;
+    // var lampNumber = 0;
+    // for (var k in OBJDATA) {
+    //   if (OBJDATA[k].class == 'energy') {
+    //     if (OBJDATA[k].type == 'switch' || OBJDATA[k].type == 'doubleSwitch' || OBJDATA[k].type == 'dimmer') switchNumber++;
+    //     if (OBJDATA[k].type == 'plug' || OBJDATA[k].type == 'plug20' || OBJDATA[k].type == 'plug32') plugNumber++;
+    //     if (OBJDATA[k].type == 'wallLight' || OBJDATA[k].type == 'roofLight') lampNumber++;
+    //   }
+    // }
+    // reportRoom+='<p>Nombre d\'interrupteur(s) : '+switchNumber+'</p>';
+    // reportRoom+='<p>Nombre de prise(s) secteur : '+plugNumber+'</p>';
+    // reportRoom+='<p>Nombre de point(s) de lumière : '+lampNumber+'</p>';
+    // reportRoom+='</div>';
+    // reportRoom+='<div>\n';
+    // reportRoom+='<h2>Répartition énergie par pièce</h2>\n';
+    // var number = 1;
+    // reportRoom+= '<div class="row">\n';
+    // reportRoom+= '<div class="col-md-4"><p>Libellé</p></div>\n';
+    // reportRoom+= '<div class="col-md-2"><small>Int.</small></div>\n';
+    // reportRoom+= '<div class="col-md-2"><small>Pri. sec.</small></div>\n';
+    // reportRoom+= '<div class="col-md-2"><small>Pt lum.</small></div>\n';
+    // reportRoom+= '<div class="col-md-2"><small>Watts Max</small></div>\n';
+    // reportRoom+='</div>';
 
-    for (var k in ROOM) {
-      reportRoom+= '<div class="row">\n';
-      var nfc = true;
-      var nameRoom = "Pièce n°"+number+" <small>(sans nom)</small>";
-      if (ROOM[k].name != "") nameRoom = ROOM[k].name;
-      reportRoom+= '<div class="col-md-4"><p>'+nameRoom+'</p></div>\n';
-      if (ROOM[k].name == "") {
-        reportRoom+= '<div class="col-md-8"><p><i class="fa fa-ban" aria-hidden="true" style="color:red"></i> La pièce n\'ayant pas de libellé, Home Rough Editor ne peut vous fournir d\'informations.</p></div>\n';
-      }
-      else {
-        if (ROOM[k].name == "Salon") {
-          for (var g in ROOM) {
-            if (ROOM[g].name == "Salle à manger") {
-              roomEnergy[k].light+=roomEnergy[g].light;
-              roomEnergy[k].plug+=roomEnergy[g].plug;
-              roomEnergy[k].switch+=roomEnergy[g].switch;
-            }
-          }
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug < 5) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>5 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-        if (ROOM[k].name == "Salle à manger") {
-          reportRoom+= '<div class="col-md-8"><p><i class="fa fa-info" aria-hidden="true" style="color:blue"></i> Cette pièce est liée au <b>salon / séjour</b> selon la norme.</p></div>\n';
-        }
-        if (ROOM[k].name.substr(0,7) == "Chambre") {
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug < 3) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>3 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-        if (ROOM[k].name == "SdB") {
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug < 2) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>2 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].switch == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 interrupteur</b> <small>(actuellement '+roomEnergy[k].switch+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-        if (ROOM[k].name == "Couloir") {
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug < 1) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 prise de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-        if (ROOM[k].name == "Toilette") {
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux</b>. <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-        if (ROOM[k].name == "Cuisine") {
-          reportRoom+= '<div class="col-md-8">';
-          if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug < 6) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>6 prise de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug32 == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 prise de courant 32A</b> <small>(actuellement '+roomEnergy[k].plug32+')</small>.</p>\n';nfc=false;}
-          if (roomEnergy[k].plug20 < 2) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>2 prise de courant 20A</b> <small>(actuellement '+roomEnergy[k].plug20+')</small>.</p>\n';nfc=false;}
-          if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
-          reportRoom+= '</div>';
-        }
-      }
-      number++;
-      reportRoom+='</div>';
-    }
+    // var roomEnergy = [];
+    // for (var k in ROOM) {
+    //   reportRoom+= '<div class="row">\n';
+    //   var nameRoom = "Pièce n°"+number+" <small>(sans nom)</small>";
+    //   if (ROOM[k].name != "") nameRoom = ROOM[k].name;
+    //   reportRoom+= '<div class="col-md-4"><p>'+nameRoom+'</p></div>\n';
+    //   var switchNumber = 0;
+    //   var plugNumber = 0;
+    //   var plug20 = 0;
+    //   var plug32 = 0;
+    //   var lampNumber = 0;
+    //   var wattMax = 0;
+    //   var plug = false;
+    //   for (var i in OBJDATA) {
+    //     if (OBJDATA[i].class == 'energy') {
+    //       if (OBJDATA[i].type == 'switch' || OBJDATA[i].type == 'doubleSwitch' || OBJDATA[i].type == 'dimmer') {
+    //         if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
+    //           if (isObjectsEquals(ROOM[k], roomTarget)) switchNumber++;
+    //         }
+    //       }
+    //       if (OBJDATA[i].type == 'plug' || OBJDATA[i].type == 'plug20' || OBJDATA[i].type == 'plug32') {
+    //         if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
+    //           if (isObjectsEquals(ROOM[k], roomTarget)) {
+    //             plugNumber++;
+    //             if (OBJDATA[i].type == 'plug' && !plug) {wattMax+=3520;plug = true;}
+    //             if (OBJDATA[i].type == 'plug20') {wattMax+=4400;plug20++;}
+    //             if (OBJDATA[i].type == 'plug32') {wattMax+=7040;plug32++;}
+    //           }
+    //         }
+    //       }
+    //       if (OBJDATA[i].type == 'wallLight' || OBJDATA[i].type == 'roofLight') {
+    //         if (roomTarget = editor.rayCastingRoom(OBJDATA[i])) {
+    //           if (isObjectsEquals(ROOM[k], roomTarget)) {
+    //           lampNumber++;
+    //            wattMax+=100;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   roomEnergy.push({switch: switchNumber, plug: plugNumber, plug20: plug20, plug32: plug32, light: lampNumber});
+    //   reportRoom+= '<div class="col-md-2"><b>'+switchNumber+'</b></div>\n';
+    //   reportRoom+= '<div class="col-md-2"><b>'+plugNumber+'</b></div>\n';
+    //   reportRoom+= '<div class="col-md-2"><b>'+lampNumber+'</b></div>\n';
+    //   reportRoom+= '<div class="col-md-2"><b>'+wattMax+'</b></div>\n';
+    //   number++;
+    //   reportRoom+='</div>';
+    // }
+    // reportRoom+='<hr/><h2>Détails Norme NF C 15-100</h2>\n';
+    // var number = 1;
+
+    // for (var k in ROOM) {
+    //   reportRoom+= '<div class="row">\n';
+    //   var nfc = true;
+    //   var nameRoom = "Pièce n°"+number+" <small>(sans nom)</small>";
+    //   if (ROOM[k].name != "") nameRoom = ROOM[k].name;
+    //   reportRoom+= '<div class="col-md-4"><p>'+nameRoom+'</p></div>\n';
+    //   if (ROOM[k].name == "") {
+    //     reportRoom+= '<div class="col-md-8"><p><i class="fa fa-ban" aria-hidden="true" style="color:red"></i> La pièce n\'ayant pas de libellé, Home Rough Editor ne peut vous fournir d\'informations.</p></div>\n';
+    //   }
+    //   else {
+    //     if (ROOM[k].name == "Salon") {
+    //       for (var g in ROOM) {
+    //         if (ROOM[g].name == "Salle à manger") {
+    //           roomEnergy[k].light+=roomEnergy[g].light;
+    //           roomEnergy[k].plug+=roomEnergy[g].plug;
+    //           roomEnergy[k].switch+=roomEnergy[g].switch;
+    //         }
+    //       }
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug < 5) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>5 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //     if (ROOM[k].name == "Salle à manger") {
+    //       reportRoom+= '<div class="col-md-8"><p><i class="fa fa-info" aria-hidden="true" style="color:blue"></i> Cette pièce est liée au <b>salon / séjour</b> selon la norme.</p></div>\n';
+    //     }
+    //     if (ROOM[k].name.substr(0,7) == "Chambre") {
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug < 3) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>3 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //     if (ROOM[k].name == "SdB") {
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug < 2) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>2 prises de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].switch == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 interrupteur</b> <small>(actuellement '+roomEnergy[k].switch+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //     if (ROOM[k].name == "Couloir") {
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug < 1) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 prise de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //     if (ROOM[k].name == "Toilette") {
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux</b>. <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //     if (ROOM[k].name == "Cuisine") {
+    //       reportRoom+= '<div class="col-md-8">';
+    //       if (roomEnergy[k].light == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 point lumineux commandé</b> <small>(actuellement '+roomEnergy[k].light+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug < 6) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>6 prise de courant</b> <small>(actuellement '+roomEnergy[k].plug+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug32 == 0) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>1 prise de courant 32A</b> <small>(actuellement '+roomEnergy[k].plug32+')</small>.</p>\n';nfc=false;}
+    //       if (roomEnergy[k].plug20 < 2) {reportRoom+= '<p><i class="fa fa-exclamation-triangle" style="color:orange" aria-hidden="true"></i> Cette pièce doit disposer d\'au moins <b>2 prise de courant 20A</b> <small>(actuellement '+roomEnergy[k].plug20+')</small>.</p>\n';nfc=false;}
+    //       if (nfc) reportRoom+='<i class="fa fa-check" aria-hidden="true" style="color:green"></i>';
+    //       reportRoom+= '</div>';
+    //     }
+    //   }
+    //   number++;
+    //   reportRoom+='</div>';
+    // }
 
     document.getElementById('reportRooms').innerHTML = reportRoom;
     $('#reportRooms').show(1000);
@@ -433,13 +435,18 @@ document.getElementById("objToolsHinge").addEventListener("click", function () {
 });
 
 window.addEventListener("load", function(){
+  // サイドバー
   document.getElementById('panel').style.transform = "translateX(200px)";
-  document.getElementById('panel').addEventListener("transitionend", function() {
-    document.getElementById('moveBox').style.transform = "translateX(-165px)";
-    document.getElementById('zoomBox').style.transform = "translateX(-165px)";
-  });
-  if (!localStorage.getItem('history')) $('#recover').html("<p>Select a plan type.");
-  $('#myModal').modal();
+  // document.getElementById('panel').addEventListener("transitionend", function() {
+  // 十字キー
+  document.getElementById('moveBox').style.transform = "translateX(-165px)";
+  // ズームコントロール
+  document.getElementById('zoomBox').style.transform = "translateX(-165px)";
+  // });
+  // if (!localStorage.getItem('history')) $('#recover').html("<p>Select a plan type.");
+  // Welcomeパネル
+  // $('#myModal').modal();
+  initHistory(true);
 });
 
 document.getElementById('sizePolice').addEventListener("input", function() {
@@ -629,6 +636,7 @@ document.getElementById("resetRoomTools").addEventListener("click", function () 
 });
 
 document.getElementById("wallTrash").addEventListener("click", function () {
+  if(typeof binder === 'undefined' || typeof binder === 'null') return;
   var wall = binder.wall;
   for (var k in WALLS) {
       if (isObjectsEquals(WALLS[k].child, wall)) WALLS[k].child = null;
@@ -1241,11 +1249,11 @@ function rib(shift = 5) {
 }
 
 function cursor(tool) {
-  if (tool == 'grab') tool = "url('https://wiki.openmrs.org/s/en_GB/7502/b9217199c27dd617c8d51f6186067d7767c5001b/_/images/icons/emoticons/add.png') 8 8, auto";
-  if (tool == 'scissor') tool = "url('https://maxcdn.icons8.com/windows10/PNG/64/Hands/hand_scissors-64.png'), auto";
-  if (tool == 'trash') tool = "url('https://cdn4.iconfinder.com/data/icons/common-toolbar/36/Cancel-32.png'), auto";
-  if (tool == 'validation') tool = "url('https://images.fatguymedia.com/wp-content/uploads/2015/09/check.png'), auto";
-  $('#lin').css('cursor',tool);
+  // if (tool == 'grab') tool = "url('https://wiki.openmrs.org/s/en_GB/7502/b9217199c27dd617c8d51f6186067d7767c5001b/_/images/icons/emoticons/add.png') 8 8, auto";
+  // if (tool == 'scissor') tool = "url('https://maxcdn.icons8.com/windows10/PNG/64/Hands/hand_scissors-64.png'), auto";
+  // if (tool == 'trash') tool = "url('https://cdn4.iconfinder.com/data/icons/common-toolbar/36/Cancel-32.png'), auto";
+  // if (tool == 'validation') tool = "url('https://images.fatguymedia.com/wp-content/uploads/2015/09/check.png'), auto";
+  // $('#lin').css('cursor',tool);
 }
 
 function fullscreen() {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,113 +11,121 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body style="background:#f2eee5;margin:0;padding:0; ">
+<body style="background:#f2eee5;margin:0;padding:0;height: 100%; ">
 
   <header>Edité par Home Rough Editor Ver.0.91</header>
+  <input style="display:none;" id="selected_file" type="file" accept='image/*' onchange="changeImage(this);">
+  <div style="display:none;" id="previewImage"></div>
+  <div id="render" style="height: 100%;	background-repeat: no-repeat;background-size: auto 100%;">
+    <svg id="lin" viewBox="0 0 1100 700"  preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg" style="z-index:2;margin:0;padding:0;width:100vw;height:100vh;position:absolute;top:0;left:0;right:0;bottom:0">
 
-  <svg id="lin" viewBox="0 0 1100 700"  preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg" style="z-index:2;margin:0;padding:0;width:100vw;height:100vh;position:absolute;top:0;left:0;right:0;bottom:0">
+      <defs>
+        <linearGradient id="gradientRed" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#e65d5e" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#e33b3c" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientYellow" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#FDEB71" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#F8D800" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientGreen" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#c0f7d9" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#6ce8a3" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientSky" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#c4e0f4" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#87c8f7" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientOrange" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#f9ad67" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#f97f00" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientWhite" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#f0f0f0" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientGrey" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#666" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#aaa" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientBlue" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#4f72a6" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#365987" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientPurple" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#E2B0FF" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#9F44D3" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientPink" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#f6c4dd" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#f699c7" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientBlack" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#3c3b3b" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="gradientNeutral" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
+          <stop offset="0%"   stop-color="#dbc6a0" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#c69d56" stop-opacity="1"/>
+        </linearGradient>
 
-    <defs>
-      <linearGradient id="gradientRed" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#e65d5e" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#e33b3c" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientYellow" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#FDEB71" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#F8D800" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientGreen" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#c0f7d9" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#6ce8a3" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientSky" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#c4e0f4" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#87c8f7" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientOrange" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#f9ad67" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#f97f00" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientWhite" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#f0f0f0" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientGrey" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#666" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#aaa" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientBlue" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#4f72a6" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#365987" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientPurple" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#E2B0FF" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#9F44D3" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientPink" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#f6c4dd" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#f699c7" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientBlack" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#3c3b3b" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#000000" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="gradientNeutral" x1="0%" y1="0%" x2="100%" y2="100%" spreadMethod="pad">
-        <stop offset="0%"   stop-color="#dbc6a0" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#c69d56" stop-opacity="1"/>
-      </linearGradient>
-
-      <pattern id="grass" patternUnits="userSpaceOnUse" width="256" height="256">
-        <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWh5nEP_Trwo96CJjev6lnKe0_dRdA63RJFaoc3-msedgxveJd" x="0" y="0" width="256" height="256" />
-      </pattern>
-      <pattern id="wood" patternUnits="userSpaceOnUse" width="32" height="256">
-        <image xlink:href="https://orig00.deviantart.net/e1f2/f/2015/164/8/b/old_oak_planks___seamless_texture_by_rls0812-d8x6htl.jpg" x="0" y="0" width="256" height="256" />
-      </pattern>
-      <pattern id="tiles" patternUnits="userSpaceOnUse" width="25" height="25">
-        <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrkoI2Eiw8ya3J_swhfpZdi_ug2sONsI6TxEd1xN5af3DX9J3R" x="0" y="0" width="256" height="256" />
-      </pattern>
-      <pattern id="granite" patternUnits="userSpaceOnUse" width="256" height="256">
-        <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9_nEMhnWVV47lxEn5T_HWxvFwkujFTuw6Ff26dRTl4rDaE8AdEQ" x="0" y="0" width="256" height="256" />
-      </pattern>
-      <pattern id="smallGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#777" stroke-width="0.25"/>
-      </pattern>
-      <pattern id="grid" width="180" height="180" patternUnits="userSpaceOnUse">
-        <rect width="180" height="180" fill="url(#smallGrid)"/>
-        <path d="M 200 10 L 200 0 L 190 0 M 0 10 L 0 0 L 10 0 M 0 190 L 0 200 L 10 200 M 190 200 L 200 200 L 200 190" fill="none" stroke="#999" stroke-width="0.8"/>
-      </pattern>
-      <pattern id="hatch" width="5" height="5" patternTransform="rotate(50 0 0)" patternUnits="userSpaceOnUse" >
-        <path d="M 0 0 L 0 5 M 10 0 L 10 10 Z" style="stroke:#666;stroke-width:5;" />
-      </pattern>
-    </defs>
-    <g id="boxgrid">
-      <rect width="8000" height="5000" x="-3500" y="-2000" fill="url(#grid)" />
-    </g>
-    <g id="boxpath"></g>
-    <g id="boxSurface"></g>
-    <g id="boxRoom"></g>
-    <g id="boxwall"></g>
-    <g id="boxcarpentry"></g>
-    <g id="boxEnergy"></g>
-    <g id="boxFurniture"></g>
-    <g id="boxbind"></g>
-    <g id="boxArea"></g>
-    <g id="boxRib"></g>
-    <g id="boxScale"></g>
-    <g id="boxText"></g>
-    <g id="boxDebug"></g>
-  </svg>
-
-  <div id="areaValue"></div>
+        <pattern id="grass" patternUnits="userSpaceOnUse" width="256" height="256">
+          <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWh5nEP_Trwo96CJjev6lnKe0_dRdA63RJFaoc3-msedgxveJd" x="0" y="0" width="256" height="256" />
+        </pattern>
+        <pattern id="wood" patternUnits="userSpaceOnUse" width="32" height="256">
+          <image xlink:href="https://orig00.deviantart.net/e1f2/f/2015/164/8/b/old_oak_planks___seamless_texture_by_rls0812-d8x6htl.jpg" x="0" y="0" width="256" height="256" />
+        </pattern>
+        <pattern id="tiles" patternUnits="userSpaceOnUse" width="25" height="25">
+          <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrkoI2Eiw8ya3J_swhfpZdi_ug2sONsI6TxEd1xN5af3DX9J3R" x="0" y="0" width="256" height="256" />
+        </pattern>
+        <pattern id="granite" patternUnits="userSpaceOnUse" width="256" height="256">
+          <image xlink:href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9_nEMhnWVV47lxEn5T_HWxvFwkujFTuw6Ff26dRTl4rDaE8AdEQ" x="0" y="0" width="256" height="256" />
+        </pattern>
+        <pattern id="smallGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#777" stroke-width="4"/>
+        </pattern>
+        <pattern id="grid" width="180" height="180" patternUnits="userSpaceOnUse">
+          <rect width="180" height="180" fill="url(#smallGrid)"/>
+          <path d="M 200 10 L 200 0 L 190 0 M 0 10 L 0 0 L 10 0 M 0 190 L 0 200 L 10 200 M 190 200 L 200 200 L 200 190" fill="none" stroke="#ffffff" stroke-width="0.8"/>
+        </pattern>
+        <pattern id="hatch" width="5" height="5" patternTransform="rotate(50 0 0)" patternUnits="userSpaceOnUse" >
+          <path d="M 0 0 L 0 5 M 10 0 L 10 10 Z" style="stroke:#666;stroke-width:5;" />
+        </pattern>
+      </defs>
+      <g id="boxgrid">
+        <rect width="8000" height="5000" x="-3500" y="-2000" fill="url(#grid)" />
+      </g>
+      <g id="boxpath"></g>
+      <g id="boxSurface"></g>
+      <g id="boxRoom"></g>
+      <g id="boxwall"></g>
+      <g id="boxcarpentry"></g>
+      <g id="boxEnergy"></g>
+      <g id="boxFurniture"></g>
+      <g id="boxbind"></g>
+      <g id="boxArea"></g>
+      <g id="boxRib"></g>
+      <g id="boxScale"></g>
+      <g id="boxText"></g>
+      <g id="boxDebug"></g>
+    </svg>
+    <div id="areaValue">
+      <div class="toHide" id="reportTotalSurface" style="display:none; font-size:0.8em"></div><br />
+      <section id="reportRooms" class="toHide" style="display:none; font-size:0.4em">
+      </section>
+    </div>
+  </div>
 
   <div id="reportTools" class="leftBox" style="width:500px;overflow-y: scroll;overflow-x: hidden">
     <h2><i class="fa fa-calculator" aria-hidden="true"></i> Report plan.</h2>
     <br/><br/>
+    <!--
     <h2 class="toHide" id="reportTotalSurface" style="display:none"></h2>
     <h2 class="toHide" id="reportNumberSurface" style="display:none"></h2>
     <hr/>
     <section id="reportRooms" class="toHide" style="display:none">
     </section>
+    -->
     <button class="btn btn-info fully" style="margin-top:50px" onclick="$('#reportTools').hide('500', function(){$('#panel').show(300);});mode = 'select_mode';"><i class="fa fa-2x fa-backward" aria-hidden="true" ></i></button>
   </div>
 
@@ -143,7 +151,7 @@
       <li><button class="btn btn-default fully" onclick="editor.visibleWall();" id="wallVisible"><i class="fa fa-2x fa-crop" aria-hidden="true"></i></button></li>
     </section>
     <br/>
-    <li><button class="btn btn-danger fully" id="wallTrash"><i class="fa fa-2x fa-trash-o" aria-hidden="true"></i></button></li>
+    <!-- <li><button class="btn btn-danger fully" id="wallTrash"><i class="fa fa-2x fa-trash-o" aria-hidden="true"></i></button></li> -->
     <li><button class="btn btn-info fully" style="margin-top:50px" onclick="fonc_button('select_mode');$('#boxinfo').html('Mode sélection');$('#wallTools').hide('300');$('#panel').show('300');"><i class="fa fa-2x fa-backward" aria-hidden="true" ></i></button></li>
     </ul>
   </div>
@@ -296,29 +304,37 @@
 
   <div id="panel" class="leftBox">
       <ul class="list-unstyled">
-        <li><button class="btn disabled halfy " id="undo" title="undo"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-        <button class="btn disabled halfy pull-right" id="redo" title="redo"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+        <li><button class="btn minibtn disabled halfy " id="undo" title="undo"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+        <button class="btn minibtn disabled halfy pull-right" id="redo" title="redo"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
         </li>
+        <br/>
+        <li><button class="btn btn-default fully " id="save_image" style="box-shadow:2px 2px 3px #ccc;"><i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i></button></li>
+        <br/>
+        <li><button class="btn btn-default fully " id="select_image" style="box-shadow:2px 2px 3px #ccc;"><i class="fa fa-2x fa-picture-o" aria-hidden="true"></i></button></li>
+        <br/>
         <br/>
         <li><button class="btn btn-success fully " id="select_mode" style="box-shadow:2px 2px 3px #ccc;"><i class="fa fa-2x fa-mouse-pointer" aria-hidden="true"></i></button></li>
         <br/>
         <li>
-        <button class="btn btn-default fully " style="margin-bottom:0px" id="line_mode" data-toggle="tooltip" data-placement="right" title="Make walls">WALL</button>
-        <button class="btn btn-default fully " style="margin-bottom:0px" id="partition_mode" data-toggle="tooltip" data-placement="right" title="Make partitions wall">PARTITION</button>
+        <button class="btn btn-default fully " style="margin-bottom:0px" id="line_mode" data-toggle="tooltip" data-placement="right" title="Make walls"><i class="fa fa-2x fa-pencil" aria-hidden="true"></i></button>
+        <button class="btn btn-default fully " style="margin-bottom:0px;display:none;" id="partition_mode" data-toggle="tooltip" data-placement="right" title="Make partitions wall">PARTITION</button>
         <div class="funkyradio"  style="font-size:0.8em">
-          <div class="funkyradio-success">
-            <input type="checkbox" id="multi" checked/>
+          <div class="funkyradio-success" style="display:none;">
+            <input type="checkbox" id="multi"/>
             <label for="multi">MULTIPLE</label>
           </div>
         </div>
         </li>
         <br/>
-        <li><button class="btn btn-default fully " id="room_mode">CONFIG. ROOMS</button></li>
         <br/>
-        <li><button class="btn btn-default fully " id="node_mode"><i class="fa fa-2x fa-scissors" aria-hidden="true"></i></button></li>
         <br/>
-        <li><button class="btn btn-default fully " id="distance_mode" data-toggle="tooltip" data-placement="right" title="Add a measurement">MEASURE</button></li>
-        <li><button class="btn btn-default fully " id="text_mode" data-toggle="tooltip" data-placement="right" title="Add text">TEXT</button></li>
+        <li><button class="btn btn-danger fully" id="wallTrash"><i class="fa fa-2x fa-trash-o" aria-hidden="true"></i></button></li>
+        <li style="display:none;"><button class="btn btn-default fully " id="room_mode">CONFIG. ROOMS</button></li>
+        <br/>
+        <li><button style="display:none;" class="btn btn-default fully " id="node_mode"><i class="fa fa-2x fa-scissors" aria-hidden="true"></i></button></li>
+        <br/>
+        <li><button style="display:none;" class="btn btn-default fully " id="distance_mode" data-toggle="tooltip" data-placement="right" title="Add a measurement">↔</button></li>
+        <li><button style="display:none;" class="btn btn-default fully " id="text_mode" data-toggle="tooltip" data-placement="right" title="Add text">あ</button></li>
         <br/>
         <div id="door_list"  class="list-unstyled sub" style="box-shadow:2px 2px 3px #ccc;display:none;background:#fff;border-radius: 0 5px 5px 0; padding:10px;position:absolute;left:200px;width:150px">
           <button class="btn fully door" id="aperture">Aperture</button>
@@ -326,7 +342,7 @@
           <button class="btn fully door" id="double">Double</button>
           <button class="btn fully door" id="pocket">Pocket</button>
         </div>
-        <li><button class="btn btn-default fully " id="door_mode" onclick="$('.sub').hide();$('#door_list').toggle(200);$('#window_list').hide();">DOOR</button></li>
+        <li style="display:none;"><button class="btn btn-default fully " id="door_mode" onclick="$('.sub').hide();$('#door_list').toggle(200);$('#window_list').hide();">DOOR</button></li>
 
         <div id="window_list"  class="list-unstyled sub" style="box-shadow:2px 2px 3px #ccc;display:none;background:#fff;border-radius: 0 5px 5px 0; padding:10px;position:absolute;left:200px;width:150px">
           <button class="btn fully window" id="fix">Fix</button>
@@ -334,8 +350,8 @@
           <button class="btn fully window" id="twin">Double</button>
           <button class="btn fully window" id="bay">Slide</button>
         </div>
-        <li><button class="btn btn-default fully " id="window_mode" onclick="$('.sub').hide();$('#window_list').toggle(200);$('#door_list').hide()">WINDOW</button></li>
-        <li><button class="btn btn-default fully object" id="stair_mode" onclick="$('.sub').hide();$('#door_list').hide()">STAIR</button></li>
+        <li style="display:none;"><button class="btn btn-default fully " id="window_mode" onclick="$('.sub').hide();$('#window_list').toggle(200);$('#door_list').hide()">WINDOW</button></li>
+        <li style="display:none;"><button class="btn btn-default fully object" id="stair_mode" onclick="$('.sub').hide();$('#door_list').hide()">STAIR</button></li>
         <br/>
         <div id="energy_list"  class="list-unstyled sub" style="box-shadow:2px 2px 3px #ccc;display:none;background:#fff;border-radius: 0 5px 5px 0; padding:10px;position:absolute;left:200px;bottom:40px;width:600px">
           <div style="width:600px;float:left;padding:10px">
@@ -373,11 +389,11 @@
           </div>
 
       </div>
-      <li><button class="btn btn-default fully " id="object_mode" onclick="$('.sub').hide();$('#energy_list').toggle(200);">ENERGY</button></li>
+      <li style="display:none;"><button class="btn btn-default fully " id="object_mode" onclick="$('.sub').hide();$('#energy_list').toggle(200);">ENERGY</button></li>
       <!-- <li><button class="btn btn-default fully " id="object_mode" onclick="$('.sub').hide();$('#object_list').toggle(200);">FURNITURE</button></li> -->
       <br/>
 
-      <li><button class="btn btn-default fully " id="layer_mode" onclick="$('.sub').hide();$('#layer_list').toggle(200);">Layers</button></li>
+      <li style="display:none;"><button class="btn btn-default fully " id="layer_mode" onclick="$('.sub').hide();$('#layer_list').toggle(200);">Layers</button></li>
 
     <div id="layer_list"  class="list-unstyled sub" style="box-shadow:2px 2px 3px #ccc;display:none;background:#fff;border-radius: 0 5px 5px 0; padding:10px;position:absolute;left:200px;bottom:100px;width:200px">
       <div class="funkyradio" style="font-size:0.8em">
@@ -406,9 +422,11 @@
       </div>
     </div>
 
-    <li><button class="btn btn-default halfy " id="report_mode" title="Show report"><i class="fa fa-calculator" aria-hidden="true"></i>
-    <button class="btn btn-default halfy pull-right" onclick="fullscreen();this.style.display='none';$('#nofull_mode').show();" id="full_mode" title="Full screen"><i class="fa fa-expand" aria-hidden="true"></i></button>
+    <li>
+    <button class="btn btn-default halfy " style="display:none" id="report_mode" title="Show report"><i class="fa fa-calculator" aria-hidden="true"></i>
+    <button class="btn btn-default halfy pull-right" style="display:none" onclick="fullscreen();this.style.display='none';$('#nofull_mode').show();" id="full_mode" title="Full screen"><i class="fa fa-expand" aria-hidden="true"></i></button>
     <button class="btn btn-default halfy pull-right" style="display:none" onclick="outFullscreen();this.style.display='none';$('#full_mode').show();" id="nofull_mode" data-toggle="tooltip" data-placement="right" title="Full screen"><i class="fa fa-compress" aria-hidden="true"></i></button>
+    <a id="download" href="#" download="canvas.jpg">ダウンロード</a>
     <li>
 
       <div style="clear:both"></div>
@@ -479,11 +497,11 @@
     </div>
   </div>
 
-  <div style="position:absolute;bottom:10px;left:210px;font-size:1.5em;color:#08d" id="boxinfo">
+  <div style="display:none;position:absolute;bottom:10px;left:210px;font-size:1.5em;color:#08d" id="boxinfo">
   </div>
 
   <div id="moveBox" style="position:absolute;right:-150px;top:10px;color:#08d;background:transparent;z-index:2;text-align:center;transition-duration: 0.2s;transition-timing-function: ease-in;">
-    <p style="margin:0px 0 0 0;font-size:11px"><img src="https://cdn4.iconfinder.com/data/icons/mathematics-doodle-3/48/102-128.png" width=20px /> Home Rough Editor</p>
+    <!-- <p style="margin:0px 0 0 0;font-size:11px"><img src="https://cdn4.iconfinder.com/data/icons/mathematics-doodle-3/48/102-128.png" width=20px /> Home Rough Editor</p> -->
     <div class="pull-right" style="margin:10px">
     <p style="margin:0"><button class="btn btn-xs btn-info zoom" data-zoom="zoomtop" style="box-shadow:2px 2px 3px #ccc;"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></p>
     <p style="margin:0">
@@ -515,4 +533,37 @@
   <script src="qSVG.js"></script>
   <script src="editor.js"></script>
   <script src="engine.js"></script>
+  <script>
+  $("#save_image").on('click', function () {
+    var svgElement = document.getElementById('lin');
+    var canvas = document.createElement('canvas');
+    canvas.width = svgElement.width.baseVal.value;
+    canvas.height = svgElement.height.baseVal.value;
+    var ctx = canvas.getContext('2d');
+    var image = new Image();
+    image.onload = function(){
+      // SVGデータをPNG形式に変換する
+      ctx.drawImage(image, 0, 0);
+      var imageData = canvas.toDataURL("image/png");
+      document.getElementById("download").href = imageData;
+      document.getElementById("download").setAttribute("download", "image.png");
+    };
+    // SVGデータを取り出す
+    var svgStr = new XMLSerializer().serializeToString(svgElement);
+    var svgData = 'data:image/svg+xml;charset=utf-8;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
+    image.src = svgData;
+    return false;
+  });
+  $("#select_image").on("click", () => {
+    $("#selected_file").click();
+    return false;
+  });
+  function changeImage(obj){
+    var fileReader = new FileReader();
+    fileReader.onload = (function() {
+      $('#render').css('background-image', 'url(' + fileReader.result + ')');
+    });
+    fileReader.readAsDataURL(obj.files[0]);
+  }
+  </script>
 </html>

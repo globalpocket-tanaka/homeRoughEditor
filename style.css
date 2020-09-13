@@ -31,7 +31,7 @@ h2 {
   background:#fff;
   box-shadow:2px 0px 3px #ccc;
   top:0px;
-  width:200px;
+  width:80px;
   height:100vh;
   padding:13px;
   position:absolute;
@@ -51,7 +51,7 @@ h2 {
 #areaValue {
   position:absolute;
   top:0;
-  left:210px;
+  left:90px;
   padding:5px;
   color:#333;
   font-size:1.5em
@@ -362,4 +362,8 @@ html {padding:0;margin:0;height:100%}
 
 #ex1Slider .slider-selection {
 background: #bec7cd;
+}
+
+.minibtn {
+  padding: 2px;
 }
