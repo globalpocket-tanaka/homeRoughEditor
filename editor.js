@@ -775,19 +775,19 @@ var editor = {
       // $('#areaValue').html('総面積：'+(globalArea/3600).toFixed(2)+ ' m²');
       document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b>"+(globalArea/3600).toFixed(2)+ "</b> m²";
       $('#reportTotalSurface').show(1000);
-      var number = 1;
-      var reportRoom = '<div class="row">\n';
-      for (var k in ROOM) {
-        var nameRoom = number;
-        if (ROOM[k].name != "") nameRoom = ROOM[k].name;
-        reportRoom+= '<div class="col-md-3"><p>'+nameRoom+'</p></div>\n';
-        reportRoom+= '<div class="col-md-9"><p><b style="margin::5px">'+((ROOM[k].area)/3600).toFixed(2)+'</b>m²</p></div>\n';
-        number++;
-      }
-      reportRoom+='</div>';
+      // var number = 1;
+      // var reportRoom = '<div class="row">\n';
+      // for (var k in ROOM) {
+      //   var nameRoom = number;
+      //   if (ROOM[k].name != "") nameRoom = ROOM[k].name;
+      //   reportRoom+= '<div class="col-md-3"><p>'+nameRoom+'</p></div>\n';
+      //   reportRoom+= '<div class="col-md-9"><p><b style="margin::5px">'+((ROOM[k].area)/3600).toFixed(2)+'</b>m²</p></div>\n';
+      //   number++;
+      // }
+      // reportRoom+='</div>';
 
-      document.getElementById('reportRooms').innerHTML = reportRoom;
-      $('#reportRooms').show(1000);
+      // document.getElementById('reportRooms').innerHTML = reportRoom;
+      // $('#reportRooms').show(1000);
     }
   },
 
