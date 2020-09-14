@@ -163,8 +163,10 @@ document.getElementById('report_mode').addEventListener("click", function() {
   mode = "report_mode";
   $('#panel').hide();
   $('#reportTools').show(200, function() {
-    document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b>"+(globalArea/3600).toFixed(2)+ "</b> m²";
-    $('#reportTotalSurface').show(1000);
+    var totalValue = (globalArea/3600).toFixed(2);
+    document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b id='reportTotalSurfacevalue'>"+totalValue+ "</b> m²";
+    document.getElementById('value').value = totalValue;
+  $('#reportTotalSurface').show(1000);
     document.getElementById('reportNumberSurface').innerHTML = "面の数 : <b>"+ROOM.length+ "</b>";
     $('#reportNumberSurface').show(1000);
     var number = 1;

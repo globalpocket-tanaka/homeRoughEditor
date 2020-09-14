@@ -14,6 +14,8 @@
 <body style="background:#f2eee5;margin:0;padding:0;height: 100%; ">
 
   <header>Edité par Home Rough Editor Ver.0.91</header>
+  <input style="display:none;" id="base64" type="text">
+  <input style="display:none;" id="value" type="text">
   <input style="display:none;" id="selected_file" type="file" accept='image/*' onchange="changeImage(this);">
   <div style="display:none;" id="previewImage"></div>
   <div id="render" style="height: 100%;	background-repeat: no-repeat;background-size: auto 100%;">
@@ -545,8 +547,10 @@
       // SVGデータをPNG形式に変換する
       ctx.drawImage(image, 0, 0);
       var imageData = canvas.toDataURL("image/png");
-      document.getElementById("download").href = imageData;
-      document.getElementById("download").setAttribute("download", "image.png");
+//      document.getElementById("download").href = imageData;
+//      document.getElementById("download").setAttribute("download", "image.png");
+      document.getElementById('base64').value = imageData;
+
     };
     // SVGデータを取り出す
     var svgStr = new XMLSerializer().serializeToString(svgElement);

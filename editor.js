@@ -773,7 +773,9 @@ var editor = {
     }
     else {
       // $('#areaValue').html('総面積：'+(globalArea/3600).toFixed(2)+ ' m²');
-      document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b>"+(globalArea/3600).toFixed(2)+ "</b> m²";
+      var totalValue = (globalArea/3600).toFixed(2);
+      document.getElementById('reportTotalSurface').innerHTML = "総面積 : <b id='reportTotalSurfacevalue'>"+totalValue+ "</b> m²";
+      document.getElementById('value').value = totalValue;
       $('#reportTotalSurface').show(1000);
       // var number = 1;
       // var reportRoom = '<div class="row">\n';
